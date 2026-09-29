@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Social Kit</title>
+    <meta name="description" content="Square up any image for Instagram with a blurred colour frame." />
+  </head>
+  <body>
+    <main class="app">
+      <header class="masthead">
+        <h1>Social&nbsp;Kit</h1>
+        <p class="tagline">Blurred frames for posts, stories and wallpapers. Nothing leaves your browser.</p>
+      </header>
+
+      <section class="stage" id="stage" aria-label="Preview">
+        <div class="dropzone" id="dropzone">
+          <p class="drop-title">Drop an image here</p>
+          <p class="drop-sub">or <button type="button" class="link" id="pick">choose a file</button>, or paste from the clipboard</p>
+          <p class="drop-note">JPEG, PNG, WebP, AVIF, GIF</p>
+        </div>
+        <figure class="preview" id="preview" hidden>
+          <canvas id="canvas" width="1024" height="1024"></canvas>
+        </figure>
+      </section>
+
+      <aside class="panel" id="panel">
+        <div class="field">
+          <label for="blur">Blur <output id="blurOut"></output></label>
+          <input type="range" id="blur" min="0" max="100" step="1" />
+        </div>
+        <div class="field">
+          <label for="saturation">Saturation <output id="saturationOut"></output></label>
+          <input type="range" id="saturation" min="0" max="250" step="5" />
+        </div>
+        <div class="field">
+          <label for="brightness">Brightness <output id="brightnessOut"></output></label>
+          <input type="range" id="brightness" min="40" max="140" step="2" />
+        </div>
+        <div class="field">
+          <label for="margin">Margin <output id="marginOut"></output></label>
+          <input type="range" id="margin" min="0" max="25" step="1" />
+        </div>
+
+        <div class="field frame-field">
+          <span class="label">Frame</span>
+          <div class="segmented" id="frame" role="group" aria-label="Frame">
+            <button type="button" data-aspect="1:1" aria-pressed="true">1:1</button>
+            <button type="button" data-aspect="16:9" aria-pressed="false">16:9</button>
+            <button type="button" data-aspect="9:16" aria-pressed="false">9:16</button>
+            <button type="button" data-aspect="pixel10" aria-pressed="false" title="1080 × 2424">Pixel&nbsp;10</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="size">Size</label>
+            <select id="size">
+              <option value="1080"></option>
+              <option value="2160"></option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="format">Format</label>
+            <select id="format">
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="download" class="primary" disabled>Download</button>
+          <button type="button" id="reset" class="ghost">Reset</button>
+        </div>
+
+        <p class="status" id="status" role="status">No image loaded.</p>
+      </aside>
+    </main>
+
+    <input type="file" id="file" accept="image/*" hidden />
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
