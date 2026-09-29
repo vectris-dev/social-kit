@@ -58,14 +58,10 @@ const frameGroup = el<HTMLDivElement>("frame");
 
 const sliders = {
   blur: el<HTMLInputElement>("blur"),
-  saturation: el<HTMLInputElement>("saturation"),
-  brightness: el<HTMLInputElement>("brightness"),
   margin: el<HTMLInputElement>("margin"),
 };
 const outputs = {
   blur: el<HTMLOutputElement>("blurOut"),
-  saturation: el<HTMLOutputElement>("saturationOut"),
-  brightness: el<HTMLOutputElement>("brightnessOut"),
   margin: el<HTMLOutputElement>("marginOut"),
 };
 
@@ -77,8 +73,6 @@ let queued = false;
 function currentLook(): Look {
   return {
     blur: Number(sliders.blur.value),
-    saturation: Number(sliders.saturation.value) / 100,
-    brightness: Number(sliders.brightness.value) / 100,
     margin: Number(sliders.margin.value),
   };
 }
@@ -95,16 +89,12 @@ function previewOptions(): RenderOptions {
 
 function writeSliders(look: Look): void {
   sliders.blur.value = String(look.blur);
-  sliders.saturation.value = String(Math.round(look.saturation * 100));
-  sliders.brightness.value = String(Math.round(look.brightness * 100));
   sliders.margin.value = String(look.margin);
   writeReadouts();
 }
 
 function writeReadouts(): void {
   outputs.blur.textContent = `${sliders.blur.value}%`;
-  outputs.saturation.textContent = `${(Number(sliders.saturation.value) / 100).toFixed(2)}×`;
-  outputs.brightness.textContent = `${(Number(sliders.brightness.value) / 100).toFixed(2)}×`;
   outputs.margin.textContent = `${sliders.margin.value}%`;
 }
 

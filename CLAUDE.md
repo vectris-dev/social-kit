@@ -26,8 +26,10 @@ sliders, download, and check the console is clean.
 - `src/main.ts` is the UI wiring: drop, paste, file picker, sliders, export.
 
 **The blur is not `ctx.filter`.** The background is drawn into a tiny buffer
-(220px down to 6px square, geometric across the slider), graded for saturation
-and brightness with a pixel loop while it is still tiny, then scaled back up by
+(220px down to 6px on the long edge, geometric across the slider), graded for
+saturation and brightness with a pixel loop while it is still tiny (fixed at
+`SATURATION` and `BRIGHTNESS` in `render.ts`; there are deliberately no controls
+for them), then scaled back up by
 repeated doubling. That is why it is constant-cost at any output size and why it
 works without filter support. `ctx.filter` is used afterwards, only if the
 browser has it, to soften the interpolation edges, and it draws overscanned by

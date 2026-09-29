@@ -14,22 +14,20 @@ export interface RenderOptions {
   height: number;
   /** 0 (barely blurred) to 100 (pure colour field). */
   blur: number;
-  /** 1 = untouched, 2.5 = very punchy. */
-  saturation: number;
-  /** 1 = untouched. Below 1 sits the frame back behind the photo. */
-  brightness: number;
   /** Minimum padding around the photo, as a percentage of the frame's short edge. */
   margin: number;
 }
 
-export type Look = Pick<RenderOptions, "blur" | "saturation" | "brightness" | "margin">;
+export type Look = Pick<RenderOptions, "blur" | "margin">;
 
 export const DEFAULT_LOOK: Look = {
   blur: 70,
-  saturation: 1.35,
-  brightness: 0.9,
   margin: 6,
 };
+
+/** The frame's grade. Punchy enough to read as a frame, dim enough to sit back. */
+const SATURATION = 1.35;
+const BRIGHTNESS = 0.9;
 
 /** Long side of the downsample buffer at blur 0 and blur 100. */
 const BUFFER_MAX = 220;
@@ -87,8 +85,9 @@ function coverRect(
 }
 
 /** Saturation and brightness, done on the tiny buffer so the cost is nil. */
-function grade(ctx: CanvasRenderingContext2D, w: number, h: number, sat: number, bri: number): void {
-  if (sat === 1 && bri === 1) return;
+function grade(ctx: CanvasRenderingContext2D, w: number, h: number): void {
+  const sat = SATURATION;
+  const bri = BRIGHTNESS;
   const image = ctx.getImageData(0, 0, w, h);
   const px = image.data;
   for (let i = 0; i < px.length; i += 4) {
@@ -160,7 +159,7 @@ export async function renderFrame(img: ImageBitmap, options: RenderOptions): Pro
   smooth(bufferCtx);
   const crop = coverRect(img.width, img.height, bufferW, bufferH);
   bufferCtx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, bufferW, bufferH);
-  grade(bufferCtx, bufferW, bufferH, options.saturation, options.brightness);
+  grade(bufferCtx, bufferW, bufferH);
 
   const background = upscale(buffer, width, height);
   soften(background, clamp((background.width / bufferW) * 0.5, 0, 40));
